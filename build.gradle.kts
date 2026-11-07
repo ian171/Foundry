@@ -1,32 +1,42 @@
 plugins {
-    id("java-library")
-    id("com.gradleup.shadow") version "9.6.1"
+    java
+    `java-library`
+    id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
 
-repositories {
-    mavenCentral()
-    maven("https://repo.papermc.io/repository/maven-public/")
+allprojects {
+    group = "com.github.ian171"
+    version = "1.0.0-SNAPSHOT"
+
+    repositories {
+        mavenCentral()
+        maven("https://repo.papermc.io/repository/maven-public/")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
 }
 
-dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
-}
+subprojects {
+    apply(plugin = "java")
+    apply(plugin = "java-library")
 
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(21)
-}
-
-tasks {
-    build {
-        dependsOn(shadowJar)
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(21))
+        }
     }
 
+    tasks.withType<JavaCompile> {
+        options.encoding = "UTF-8"
+        options.release.set(21)
+    }
 
+    dependencies {
+        // Common test dependencies
+        testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    }
 
-    processResources {
-        val props = mapOf("version" to version, "description" to project.description)
-        filesMatching("plugin.yml") {
-            expand(props)
-        }
+    tasks.test {
+        useJUnitPlatform()
     }
 }
