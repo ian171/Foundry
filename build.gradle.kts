@@ -1,7 +1,7 @@
 plugins {
     java
     `java-library`
-    id("com.github.johnrengelman.shadow") version "8.1.1" apply false
+    id("com.gradleup.shadow") version "9.6.1"
 }
 
 allprojects {
@@ -12,6 +12,78 @@ allprojects {
         mavenCentral()
         maven("https://repo.papermc.io/repository/maven-public/")
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
+}
+
+// Root project configuration - Main plugin JAR
+dependencies {
+    // Include all core Foundry modules
+    implementation(project(":foundry-api"))
+    implementation(project(":foundry-core"))
+    implementation(project(":foundry-common"))
+    implementation(project(":foundry-energy"))
+    implementation(project(":foundry-fluid"))
+    implementation(project(":foundry-block"))
+    implementation(project(":foundry-machine"))
+    implementation(project(":foundry-network"))
+    implementation(project(":foundry-gui"))
+    implementation(project(":foundry-entity"))
+    implementation(project(":foundry-recipe"))
+    implementation(project(":foundry-storage"))
+    implementation(project(":foundry-platform:platform-bukkit"))
+    implementation(project(":foundry-platform:platform-paper"))
+    implementation(project(":foundry-folia"))
+
+    // Paper API
+    compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+tasks {
+    shadowJar {
+        archiveClassifier.set("")
+        archiveFileName.set("Foundry-${project.version}.jar")
+
+        // Relocate dependencies to avoid conflicts
+        relocate("org.sqlite", "cn.epicmc.foundry.libs.sqlite")
+
+        // Exclude unnecessary files
+        exclude("META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
+
+        // Process resources
+        from(sourceSets.main.get().output)
+
+        // Include all foundry modules
+        configurations = listOf(project.configurations.runtimeClasspath.get())
+
+        manifest {
+            attributes(
+                "Implementation-Title" to "Foundry",
+                "Implementation-Version" to project.version,
+                "Multi-Release" to "true"
+            )
+        }
+    }
+
+    build {
+        dependsOn(shadowJar)
+    }
+
+    named<Copy>("processResources") {
+        val props = mapOf(
+            "version" to project.version,
+            "description" to "Minecraft Technology Framework"
+        )
+        inputs.properties(props)
+        filteringCharset = "UTF-8"
+        filesMatching("plugin.yml") {
+            expand(props)
+        }
     }
 }
 

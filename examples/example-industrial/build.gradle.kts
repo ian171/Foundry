@@ -1,19 +1,4 @@
-plugins {
-    id("com.github.johnrengelman.shadow")
-}
-
 dependencies {
     compileOnly(project(":foundry-api"))
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
-}
-
-tasks {
-    shadowJar {
-        archiveClassifier.set("")
-        archiveFileName.set("ExampleIndustrial-${project.version}.jar")
-    }
-
-    build {
-        dependsOn(shadowJar)
-    }
 }
