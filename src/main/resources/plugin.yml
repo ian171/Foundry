@@ -1,0 +1,12 @@
+name: Foundry
+description: $description
+prefix: Foundry
+version: '${version}'
+
+main: cn.epicmc.Foundry
+paper-plugin-loader: cn.epicmc.FoundryLoader
+api-version: '1.21.1'
+load: POSTWORLD
+
+authors: [ Chen ]
+website: wiki.epicmc.cn
