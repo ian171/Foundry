@@ -2,11 +2,13 @@ plugins {
     java
     `java-library`
     id("com.gradleup.shadow") version "9.6.1"
+    id("maven-publish")
+    signing
 }
 
 allprojects {
-    group = "com.github.ian171"
-    version = "1.0.0-SNAPSHOT"
+    group = "io.github.ian171"
+    version = "0.0.1.2-SNAPSHOT"
 
     repositories {
         mavenCentral()
@@ -14,7 +16,71 @@ allprojects {
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
 }
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "io.github.ian171"
+            artifactId = "foundry"
+            version = project.version.toString()
+            pom{
+                name.set("Foundry")
+                description.set("Minecraft Technology Framework")
+                url.set("https://github.com/ian171/Foundry")
 
+                developers {
+                    developer {
+                        id.set("chen")
+                        name.set("Chen")
+                        email.set("chenyeguo666888@hotmail.com")
+                    }
+                }
+                licenses {
+                    license {
+                        name.set("The GNU General Public License v3.0")
+                        url.set("https://www.gnu.org/licenses/gpl-3.0.html")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/ian171/Foundry.git")
+                    developerConnection.set("scm:git:ssh://git@github.com:ian171/Foundry.git")
+                    url.set("https://github.com/ian171/Foundry")
+                }
+            }
+            from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/ian171/Foundry")
+            credentials {
+                username = providers.gradleProperty("gpr.user").orNull
+                    ?: providers.environmentVariable("GITHUB_ACTOR").orNull
+                password = providers.gradleProperty("gpr.token").orNull
+                    ?: providers.environmentVariable("GITHUB_TOKEN").orNull
+            }
+        }
+    }
+}
+signing {
+    // 只有在发布到 MavenCentral 仓库时才强制签名
+    val isPublishToMavenCentral = gradle.startParameter.taskNames.any { it.contains("MavenCentral") }
+    setRequired({ isPublishToMavenCentral })
+
+    // 显式从 properties 中读取并配置
+    val keyId = providers.gradleProperty("signing.keyId").orNull
+    val password = providers.gradleProperty("signing.password").orNull
+    val secretKey = providers.gradleProperty("signing.secretKey").orNull
+
+    if (keyId != null && password != null && secretKey != null) {
+        useInMemoryPgpKeys(keyId, secretKey, password)
+    }
+
+    // 只有在需要签名时才签署
+    if (isPublishToMavenCentral) {
+        sign(publishing.publications["maven"])
+    }
+}
 // Root project configuration - Main plugin JAR
 dependencies {
     // Include all core Foundry modules
