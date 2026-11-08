@@ -7,6 +7,7 @@ main: cn.epicmc.Foundry
 paper-plugin-loader: cn.epicmc.FoundryLoader
 api-version: '1.21.1'
 load: POSTWORLD
+folia-supported: true
 
-authors: [ Chen ]
+authors: [ MagicPixel ]
 website: wiki.epicmc.cn
