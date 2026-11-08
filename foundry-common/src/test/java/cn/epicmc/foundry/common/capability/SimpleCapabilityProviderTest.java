@@ -171,7 +171,8 @@ class SimpleCapabilityProviderTest {
         });
 
         assertThrows(NullPointerException.class, () -> {
-            provider.registerCapability(ENERGY, null);
+            EnergyHandler nullHandler = null;
+            provider.registerCapability(ENERGY, nullHandler);
         });
 
         assertThrows(NullPointerException.class, () -> {

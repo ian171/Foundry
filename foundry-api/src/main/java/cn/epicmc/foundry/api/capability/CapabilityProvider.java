@@ -75,7 +75,7 @@ public interface CapabilityProvider {
      * @param <T> The capability type
      * @return The capability if supported, or empty
      */
-    <T extends Capability> Optional<T> getCapability(CapabilityKey<?> key, Direction side);
+    <T extends Capability> Optional<T> getCapability(CapabilityKey<T> key, Direction side);
 
     /**
      * Get all capabilities supported by this provider.
@@ -99,14 +99,14 @@ public interface CapabilityProvider {
     /**
      * Check if this provider supports a specific capability on a given side.
      * <p>
-     * This is a convenience method equivalent to:
-     * {@code getCapability(key, side).isPresent()}
+     * This is a convenience method that checks if the capability would be available.
      *
      * @param key The capability key to check
      * @param side The side to check
+     * @param <T> The capability type
      * @return {@code true} if the capability is supported, {@code false} otherwise
      */
-    default boolean hasCapability(CapabilityKey<?> key, Direction side) {
+    default <T extends Capability> boolean hasCapability(CapabilityKey<T> key, Direction side) {
         return getCapability(key, side).isPresent();
     }
 
