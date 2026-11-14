@@ -1,52 +1,39 @@
 package cn.epicmc.foundry.api;
 
 import cn.epicmc.foundry.api.unit.Unit;
+import org.jetbrains.annotations.ApiStatus.Experimental;
 
+@Experimental
 public interface Capacity {
+    double DEFAULT_MAX_CAPACITY = 64d;
 
-    /**
-     * Get the max amount of things that can be stored.
-     * @return amount
-     */
+    void put();
+
+    double get();
+
     double getMaxCapacity();
 
-    /**
-     * Can store things permanently or leak.
-     * @return if it can be contained permanently.
-     */
     boolean canContain();
 
-    /**
-     * Get the lowest temperature in Celsius.
-     * @return temperature in float
-     */
     float getMinTemperature();
-
-    /**
-     * Get the highest temperature in Celsius.
-     * @return temperature in float
-     */
     float getMaxTemperature();
-
-    /**
-     * Get temperature of container.
-     * @return
-     */
     float getInstantTemperature();
-
+    void setTemperature(float temperature);
+    void tick();
     Unit getUnit();
+    int setContainer();
+
+    default boolean isTemperatureValid(){
+        return getInstantTemperature() < getMaxTemperature() && getInstantTemperature() > getMinTemperature();
+    }
+    void reset();
+
     /**
-     * Is the temperature of the container in the range of Max and min temperature.
+     * Convert one unit to another unit. Accept all unit from cn.epicmc.foundry.api.unit
+     * @param unit
      * @return
      */
-    default boolean isTemperatureValid(){
-        return getInstantTemperature() > getMinTemperature() && getInstantTemperature() < getMaxTemperature();
-    }
-
-    /**
-     * Run in each tick.
-     */
-    void tick();
+    double convertTo(Unit unit);
 
 
 }

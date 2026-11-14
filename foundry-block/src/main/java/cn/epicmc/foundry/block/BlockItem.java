@@ -1,5 +1,6 @@
-package cn.epicmc.foundry.api.item;
+package cn.epicmc.foundry.block;
 
+import cn.epicmc.foundry.api.item.AbstractItem;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 

@@ -199,6 +199,6 @@
  *
  * @see cn.epicmc.foundry.api.item.ItemDefinition
  * @see cn.epicmc.foundry.api.item.AbstractItem
- * @see cn.epicmc.foundry.api.item.BlockItem
+ * @see cn.epicmc.foundry.block.BlockItem
  */
 package cn.epicmc.foundry.api.item;
