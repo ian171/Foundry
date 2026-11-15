@@ -143,11 +143,11 @@
  *   <li>Validate temperature (>= 0 K) and pressure (>= 0 Pa)</li>
  * </ol>
  *
- * @see cn.epicmc.foundry.api.unit.Unit
- * @see cn.epicmc.foundry.api.unit.UnitCategory
- * @see cn.epicmc.foundry.api.unit.EnergyUnit
- * @see cn.epicmc.foundry.api.unit.FluidUnit
- * @see cn.epicmc.foundry.api.unit.TemperatureUnit
- * @see cn.epicmc.foundry.api.unit.PressureUnit
+ * @see cn.epicmc.foundry.api.util.Unit
+ * @see cn.epicmc.foundry.api.util.UnitCategory
+ * @see cn.epicmc.foundry.api.util.EnergyUnit
+ * @see cn.epicmc.foundry.api.util.FluidUnit
+ * @see cn.epicmc.foundry.api.util.TemperatureUnit
+ * @see cn.epicmc.foundry.api.util.PressureUnit
  */
-package cn.epicmc.foundry.api.unit;
+package cn.epicmc.foundry.api.util;

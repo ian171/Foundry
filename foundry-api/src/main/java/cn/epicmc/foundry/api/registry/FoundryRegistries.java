@@ -2,10 +2,10 @@ package cn.epicmc.foundry.api.registry;
 
 import cn.epicmc.foundry.api.block.BlockDefinition;
 import cn.epicmc.foundry.api.item.ItemDefinition;
-import cn.epicmc.foundry.api.unit.EnergyUnit;
-import cn.epicmc.foundry.api.unit.FluidUnit;
-import cn.epicmc.foundry.api.unit.PressureUnit;
-import cn.epicmc.foundry.api.unit.TemperatureUnit;
+import cn.epicmc.foundry.api.util.EnergyUnit;
+import cn.epicmc.foundry.api.util.FluidUnit;
+import cn.epicmc.foundry.api.util.PressureUnit;
+import cn.epicmc.foundry.api.util.TemperatureUnit;
 
 /**
  * Standard registry keys for the Foundry framework.

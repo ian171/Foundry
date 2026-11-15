@@ -29,7 +29,7 @@ public final class StandardUnitsRegistration {
      * Register standard energy units.
      */
     private static void registerEnergyUnits(RegistryManager registryManager) {
-        MutableRegistry<cn.epicmc.foundry.api.unit.EnergyUnit> registry =
+        MutableRegistry<cn.epicmc.foundry.api.util.EnergyUnit> registry =
             registryManager.getMutableRegistry(FoundryRegistries.ENERGY_UNITS);
 
         registry.register(StandardUnits.EU.getId(), StandardUnits.EU);
@@ -39,7 +39,7 @@ public final class StandardUnitsRegistration {
      * Register standard fluid units.
      */
     private static void registerFluidUnits(RegistryManager registryManager) {
-        MutableRegistry<cn.epicmc.foundry.api.unit.FluidUnit> registry =
+        MutableRegistry<cn.epicmc.foundry.api.util.FluidUnit> registry =
             registryManager.getMutableRegistry(FoundryRegistries.FLUID_UNITS);
 
         registry.register(StandardUnits.MILLIBUCKET.getId(), StandardUnits.MILLIBUCKET);
@@ -50,7 +50,7 @@ public final class StandardUnitsRegistration {
      * Register standard temperature units.
      */
     private static void registerTemperatureUnits(RegistryManager registryManager) {
-        MutableRegistry<cn.epicmc.foundry.api.unit.TemperatureUnit> registry =
+        MutableRegistry<cn.epicmc.foundry.api.util.TemperatureUnit> registry =
             registryManager.getMutableRegistry(FoundryRegistries.TEMPERATURE_UNITS);
 
         registry.register(StandardUnits.KELVIN.getId(), StandardUnits.KELVIN);
@@ -61,7 +61,7 @@ public final class StandardUnitsRegistration {
      * Register standard pressure units.
      */
     private static void registerPressureUnits(RegistryManager registryManager) {
-        MutableRegistry<cn.epicmc.foundry.api.unit.PressureUnit> registry =
+        MutableRegistry<cn.epicmc.foundry.api.util.PressureUnit> registry =
             registryManager.getMutableRegistry(FoundryRegistries.PRESSURE_UNITS);
 
         registry.register(StandardUnits.PASCAL.getId(), StandardUnits.PASCAL);

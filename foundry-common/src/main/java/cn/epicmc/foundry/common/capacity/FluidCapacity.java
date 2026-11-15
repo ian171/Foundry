@@ -1,8 +1,7 @@
 package cn.epicmc.foundry.common.capacity;
 
 import cn.epicmc.foundry.api.Capacity;
-import cn.epicmc.foundry.api.unit.FluidUnit;
-import cn.epicmc.foundry.api.unit.Unit;
+import cn.epicmc.foundry.api.util.Unit;
 import cn.epicmc.foundry.common.nbt.NBTSerializable;
 import cn.epicmc.foundry.common.nbt.NBTUtil;
 import org.bukkit.Material;

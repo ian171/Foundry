@@ -1,4 +1,4 @@
-package cn.epicmc.foundry.api.unit;
+package cn.epicmc.foundry.api.util;
 
 /**
  * Categories of units used in the Foundry framework.

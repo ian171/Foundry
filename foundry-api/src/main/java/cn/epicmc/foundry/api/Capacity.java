@@ -1,6 +1,6 @@
 package cn.epicmc.foundry.api;
 
-import cn.epicmc.foundry.api.unit.Unit;
+import cn.epicmc.foundry.api.util.Unit;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 
 @Experimental
