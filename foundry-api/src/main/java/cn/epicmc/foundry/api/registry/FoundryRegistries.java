@@ -1,5 +1,7 @@
 package cn.epicmc.foundry.api.registry;
 
+import cn.epicmc.foundry.api.block.BlockDefinition;
+import cn.epicmc.foundry.api.item.ItemDefinition;
 import cn.epicmc.foundry.api.unit.EnergyUnit;
 import cn.epicmc.foundry.api.unit.FluidUnit;
 import cn.epicmc.foundry.api.unit.PressureUnit;
@@ -76,10 +78,28 @@ public final class FoundryRegistries {
     public static final RegistryKey<PressureUnit> PRESSURE_UNITS =
         RegistryKey.of("foundry", "pressure_unit", PressureUnit.class);
 
+    /**
+     * Registry for block definitions.
+     * <p>
+     * <b>Type:</b> {@link BlockDefinition}<br>
+     * <b>Registration Phase:</b> REGISTRY<br>
+     * <b>Dynamic Registration:</b> Supported
+     */
+    public static final RegistryKey<BlockDefinition> BLOCKS =
+        RegistryKey.of("foundry", "block", BlockDefinition.class);
+
+    /**
+     * Registry for item definitions.
+     * <p>
+     * <b>Type:</b> {@link ItemDefinition}<br>
+     * <b>Registration Phase:</b> REGISTRY<br>
+     * <b>Dynamic Registration:</b> Supported
+     */
+    public static final RegistryKey<ItemDefinition> ITEMS =
+        RegistryKey.of("foundry", "item", ItemDefinition.class);
+
     // TODO: Add more registry keys as needed:
     // - MACHINE_DEFINITIONS
-
-    // - BLOCK_DEFINITIONS
     // - FLUID_TYPES
     // - RECIPE_TYPES
     // - CAPABILITY_TYPES

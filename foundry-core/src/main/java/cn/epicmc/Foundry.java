@@ -2,9 +2,12 @@ package cn.epicmc;
 
 import cn.epicmc.foundry.api.FoundryAPI;
 import cn.epicmc.foundry.api.registry.RegistryManager;
+import cn.epicmc.foundry.common.unit.StandardUnitsRegistration;
 import cn.epicmc.foundry.core.annotation.AnnotationProcessor;
 import cn.epicmc.foundry.core.annotation.AnnotationScanner;
 import cn.epicmc.foundry.core.block.BlockManager;
+import cn.epicmc.foundry.core.event.BlockEventDispatcher;
+import cn.epicmc.foundry.core.event.FoundryBlockListener;
 import cn.epicmc.foundry.core.registry.SimpleRegistryManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,6 +25,8 @@ public class Foundry extends JavaPlugin {
     private BlockManager blockManager;
     private AnnotationScanner annotationScanner;
     private AnnotationProcessor annotationProcessor;
+    private BlockEventDispatcher eventDispatcher;
+    private FoundryBlockListener blockListener;
 
     @Override
     public void onLoad() {
@@ -44,6 +49,18 @@ public class Foundry extends JavaPlugin {
         blockManager = new BlockManager();
         annotationScanner = new AnnotationScanner(getLogger());
         annotationProcessor = new AnnotationProcessor(registryManager, getLogger());
+
+        // Initialize event system
+        eventDispatcher = new BlockEventDispatcher(blockManager, getLogger());
+        blockListener = new FoundryBlockListener(
+            blockManager,
+            registryManager,
+            eventDispatcher,
+            getLogger()
+        );
+
+        // Register event listener
+        getServer().getPluginManager().registerEvents(blockListener, this);
 
         // Register built-in content
         registerBuiltinContent();
@@ -105,5 +122,14 @@ public class Foundry extends JavaPlugin {
      */
     public BlockManager getBlockManager() {
         return blockManager;
+    }
+
+    /**
+     * Get the event dispatcher.
+     *
+     * @return The event dispatcher
+     */
+    public BlockEventDispatcher getEventDispatcher() {
+        return eventDispatcher;
     }
 }
