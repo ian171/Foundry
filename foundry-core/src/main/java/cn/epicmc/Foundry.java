@@ -2,6 +2,8 @@ package cn.epicmc;
 
 import cn.epicmc.foundry.api.FoundryAPI;
 import cn.epicmc.foundry.api.registry.RegistryManager;
+import cn.epicmc.foundry.common.unit.DependencyFinder;
+import cn.epicmc.foundry.common.unit.StandardUnits;
 import cn.epicmc.foundry.common.unit.StandardUnitsRegistration;
 import cn.epicmc.foundry.core.annotation.AnnotationProcessor;
 import cn.epicmc.foundry.core.annotation.AnnotationScanner;
@@ -9,8 +11,11 @@ import cn.epicmc.foundry.core.block.BlockManager;
 import cn.epicmc.foundry.core.event.BlockEventDispatcher;
 import cn.epicmc.foundry.core.event.FoundryBlockListener;
 import cn.epicmc.foundry.core.registry.SimpleRegistryManager;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -43,8 +48,7 @@ public class Foundry extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("Enabling Foundry framework...");
-
+        printBanner();
         // Initialize managers
         blockManager = new BlockManager();
         annotationScanner = new AnnotationScanner(getLogger());
@@ -93,9 +97,7 @@ public class Foundry extends JavaPlugin {
     private void registerBuiltinContent() {
         // This will be implemented when we add the standard units registration
         getLogger().info("Registering built-in content...");
-
-        // TODO: Register standard units
-        // StandardUnits.register(registryManager);
+        StandardUnitsRegistration.registerAll(registryManager);
     }
 
     /**
@@ -113,6 +115,11 @@ public class Foundry extends JavaPlugin {
         }
 
         // TODO: Scan other plugins that depend on Foundry
+        List<Plugin> foundryDependency = DependencyFinder.getDependentPlugins("Foundry", true);
+
+        for (Plugin p : foundryDependency) {
+            getLogger().info(" - " + p.getName() + " (版本: " + p.getDescription().getVersion() + ")");
+        }
     }
 
     /**
@@ -131,5 +138,19 @@ public class Foundry extends JavaPlugin {
      */
     public BlockEventDispatcher getEventDispatcher() {
         return eventDispatcher;
+    }
+
+
+    private void printBanner(){
+        this.getLogger().info("""
+                ███████╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗ ██████╗ ██╗   ██╗
+                ██╔════╝██╔═══██╗██║   ██║████╗  ██║██╔══██╗██╔══██╗╚██╗ ██╔╝
+                █████╗  ██║   ██║██║   ██║██╔██╗ ██║██║  ██║██████╔╝ ╚████╔╝\s
+                ██╔══╝  ██║   ██║██║   ██║██║╚██╗██║██║  ██║██╔══██╗  ╚██╔╝ \s
+                ██║     ╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝██║  ██║   ██║  \s
+                ╚═╝      ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝   ╚═╝  \s
+                
+                """);
+
     }
 }
