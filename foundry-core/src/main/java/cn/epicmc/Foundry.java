@@ -1,7 +1,9 @@
 package cn.epicmc;
 
 import cn.epicmc.foundry.api.FoundryAPI;
+import cn.epicmc.foundry.api.registry.FoundryRegistries;
 import cn.epicmc.foundry.api.registry.RegistryManager;
+import cn.epicmc.foundry.common.unit.DependencyFinder;
 import cn.epicmc.foundry.common.unit.StandardUnitsRegistration;
 import cn.epicmc.foundry.core.annotation.AnnotationProcessor;
 import cn.epicmc.foundry.core.annotation.AnnotationScanner;
@@ -9,9 +11,12 @@ import cn.epicmc.foundry.core.block.BlockManager;
 import cn.epicmc.foundry.core.event.BlockEventDispatcher;
 import cn.epicmc.foundry.core.event.FoundryBlockListener;
 import cn.epicmc.foundry.core.registry.SimpleRegistryManager;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Main class for the Foundry framework.
@@ -20,6 +25,8 @@ import java.util.Set;
  * on Bukkit/Paper servers.
  */
 public class Foundry extends JavaPlugin {
+
+    public static Logger logger;
 
     private RegistryManager registryManager;
     private BlockManager blockManager;
@@ -31,9 +38,13 @@ public class Foundry extends JavaPlugin {
     @Override
     public void onLoad() {
         getLogger().info("Loading Foundry framework...");
+        logger = getLogger();
 
         // Initialize registry system
         registryManager = new SimpleRegistryManager(this);
+
+        // Create core registries during BOOTSTRAP phase
+        createCoreRegistries();
 
         // Initialize API
         FoundryAPI.initialize(registryManager);
@@ -41,10 +52,28 @@ public class Foundry extends JavaPlugin {
         getLogger().info("Foundry framework loaded");
     }
 
+    /**
+     * Create all core Foundry registries.
+     * <p>
+     * This must be called during the BOOTSTRAP phase (onLoad).
+     */
+    private void createCoreRegistries() {
+        SimpleRegistryManager manager = (SimpleRegistryManager) registryManager;
+
+        // Create unit registries (static - cannot be modified after WORLD_LOAD)
+        manager.createRegistry(FoundryRegistries.ENERGY_UNITS, false);
+        manager.createRegistry(FoundryRegistries.FLUID_UNITS, false);
+        manager.createRegistry(FoundryRegistries.TEMPERATURE_UNITS, false);
+        manager.createRegistry(FoundryRegistries.PRESSURE_UNITS, false);
+
+        // Create block and item registries (dynamic - can be modified at runtime)
+        manager.createRegistry(FoundryRegistries.BLOCKS, true);
+        manager.createRegistry(FoundryRegistries.ITEMS, true);
+    }
+
     @Override
     public void onEnable() {
-        getLogger().info("Enabling Foundry framework...");
-
+        printBanner();
         // Initialize managers
         blockManager = new BlockManager();
         annotationScanner = new AnnotationScanner(getLogger());
@@ -93,9 +122,7 @@ public class Foundry extends JavaPlugin {
     private void registerBuiltinContent() {
         // This will be implemented when we add the standard units registration
         getLogger().info("Registering built-in content...");
-
-        // TODO: Register standard units
-        // StandardUnits.register(registryManager);
+        StandardUnitsRegistration.registerAll(registryManager);
     }
 
     /**
@@ -112,7 +139,14 @@ public class Foundry extends JavaPlugin {
             annotationProcessor.processClasses(foundryClasses);
         }
 
-        // TODO: Scan other plugins that depend on Foundry
+        List<Plugin> foundryDependency = DependencyFinder.getDependentPlugins("Foundry", true);
+        if (foundryDependency.isEmpty()){
+            getLogger().warning("No Plugin will be loaded.");
+            return;
+        }
+        for (Plugin p : foundryDependency) {
+            getLogger().info(" - " + p.getName() + " (版本: " + p.getDescription().getVersion() + ")");
+        }
     }
 
     /**
@@ -131,5 +165,20 @@ public class Foundry extends JavaPlugin {
      */
     public BlockEventDispatcher getEventDispatcher() {
         return eventDispatcher;
+    }
+
+
+    private void printBanner(){
+        this.getLogger().info("""
+                
+                ███████╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗ ██████╗ ██╗   ██╗
+                ██╔════╝██╔═══██╗██║   ██║████╗  ██║██╔══██╗██╔══██╗╚██╗ ██╔╝
+                █████╗  ██║   ██║██║   ██║██╔██╗ ██║██║  ██║██████╔╝ ╚████╔╝\s
+                ██╔══╝  ██║   ██║██║   ██║██║╚██╗██║██║  ██║██╔══██╗  ╚██╔╝ \s
+                ██║     ╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝██║  ██║   ██║  \s
+                ╚═╝      ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝   ╚═╝  \s
+                
+                """);
+
     }
 }

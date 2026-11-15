@@ -1,6 +1,6 @@
 package cn.epicmc.foundry.common.unit;
 
-import cn.epicmc.foundry.api.unit.*;
+import cn.epicmc.foundry.api.util.*;
 import org.bukkit.NamespacedKey;
 
 /**

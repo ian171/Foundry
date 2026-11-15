@@ -1,7 +1,5 @@
 package cn.epicmc.foundry.common.capacity;
 
-import cn.epicmc.foundry.api.Capacity;
-import cn.epicmc.foundry.api.unit.Unit;
 import cn.epicmc.foundry.common.nbt.NBTHelper;
 import cn.epicmc.foundry.common.nbt.NBTSerializable;
 import cn.epicmc.foundry.common.nbt.NBTUtil;
@@ -10,7 +8,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Item storage implementation of Capacity.
