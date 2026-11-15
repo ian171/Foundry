@@ -254,20 +254,12 @@ public class FoundryBlockListener implements Listener {
              */
             @Override
             public Optional<ItemStack> getItemStack() {
-                return Optional.empty();
+                return Optional.ofNullable(event.getItemInHand());
             }
 
-            /**
-             * Check if this placement should replace an existing block.
-             * <p>
-             * True if the block is being placed into a replaceable block
-             * (like tall grass, water, etc).
-             *
-             * @return {@code true} if replacing, {@code false} otherwise
-             */
             @Override
             public boolean isReplacing() {
-                return false;
+                return !event.getBlockReplacedState().getType().isAir();
             }
         };
     }
