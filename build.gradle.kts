@@ -8,7 +8,7 @@ plugins {
 
 allprojects {
     group = "io.github.ian171"
-    version = "0.0.1.2-SNAPSHOT"
+    version = "0.0.1.3-SNAPSHOT"
 
     repositories {
         mavenCentral()
